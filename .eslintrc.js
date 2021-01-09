@@ -1,4 +1,15 @@
 module.exports = {
-  root: true,
-  extends: '@react-native-community',
-};
+  "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "typescriptreact",
+      "autoFix": true
+    }
+  ]
+}
