@@ -4,6 +4,7 @@ import { View, FlatList, Text, Pressable, StyleSheet, ActivityIndicator } from '
 import AppContext from '../../context/AppContext'
 import { get } from '../../libs/Http'
 import CoinsItem from './CoinsItem'
+import Colors from '../../res/Colors'
 
 const CoinsScreen = (props) => {
   const [loading, setLoading] = useState(true)
@@ -21,10 +22,8 @@ const CoinsScreen = (props) => {
     getDataFetch()
   }, [])
 
-  const handlePress = () => {
-    console.log(data)
-
-    props.navigation.navigate('CoinDetail')
+  const handlePress = (coinDetail) => {
+    props.navigation.navigate('CoinDetail', { coinDetail })
   }
 
   return (
@@ -38,7 +37,7 @@ const CoinsScreen = (props) => {
             size="large" />
           : <FlatList
             data={coins}
-            renderItem={({ item }) => (<CoinsItem item={item} />)} >
+            renderItem={({ item }) => (<CoinsItem item={item} onPress={() => handlePress(item)} />)} >
           </FlatList>
       }
 
@@ -54,7 +53,7 @@ const styles = StyleSheet.create(
   {
     container: {
       flex: 1,
-      backgroundColor: "#fff",
+      backgroundColor: Colors.charade,
     },
     titleText: {
       color: "#fff",
