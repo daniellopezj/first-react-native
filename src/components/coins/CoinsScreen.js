@@ -4,6 +4,7 @@ import { View, FlatList, Text, Pressable, StyleSheet, ActivityIndicator } from '
 import AppContext from '../../context/AppContext'
 import { get } from '../../libs/Http'
 import CoinsItem from './CoinsItem'
+import Colors from '../../res/Colors'
 
 const CoinsScreen = (props) => {
   const [loading, setLoading] = useState(true)
@@ -54,7 +55,7 @@ const styles = StyleSheet.create(
   {
     container: {
       flex: 1,
-      backgroundColor: "#fff",
+      backgroundColor: Colors.charade,
     },
     titleText: {
       color: "#fff",
