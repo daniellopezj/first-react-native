@@ -22,10 +22,8 @@ const CoinsScreen = (props) => {
     getDataFetch()
   }, [])
 
-  const handlePress = () => {
-    console.log(data)
-
-    props.navigation.navigate('CoinDetail')
+  const handlePress = (coinDetail) => {
+    props.navigation.navigate('CoinDetail', { coinDetail })
   }
 
   return (
@@ -39,7 +37,7 @@ const CoinsScreen = (props) => {
             size="large" />
           : <FlatList
             data={coins}
-            renderItem={({ item }) => (<CoinsItem item={item} />)} >
+            renderItem={({ item }) => (<CoinsItem item={item} onPress={() => handlePress(item)} />)} >
           </FlatList>
       }
 
