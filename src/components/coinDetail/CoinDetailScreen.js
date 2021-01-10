@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, Image, StyleSheet, SectionList } from 'react-native'
+import React, { useEffect, useState, useContext } from 'react'
+import { View, Text, Image, StyleSheet, FlatList, SectionList } from 'react-native'
 import Colors from '../../res/Colors'
+import AppContext from '../../context/AppContext'
+import { get } from '../../libs/Http'
+import CoinMarketItem from './CoinMarketItem'
 
 const CoinDetailScreen = ({ route, navigation }) => {
 
   const { coinDetail } = route.params
   const [coin, setCoin] = useState(coinDetail)
-
+  const { state, listMarkets } = useContext(AppContext)
+  const { markets } = state
 
   getSymbolIcon = (nameString) => {
     if (nameString) {
-      console.log(nameString)
       const name = nameString.toLowerCase().replace(" ", "-")
       return `https://c1.coinlore.com/img/25x25/${name}.png`
     }
   }
 
   getSecctions = () => {
-    console.log('dentro de secciones')
     const sections = [
       {
         title: "Market cap",
@@ -37,7 +39,11 @@ const CoinDetailScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     navigation.setOptions({ title: coin.name })
-    console.log(coin)
+    async function getMarkets() {
+      const markets = await get(`coin/markets/?id=${coin.id}`)
+      listMarkets(markets)
+    }
+    getMarkets()
   }, [])
 
   return (
@@ -47,7 +53,7 @@ const CoinDetailScreen = ({ route, navigation }) => {
         <Text style={Styles.textTitle}> {coin.name}</Text>
       </View>
       <SectionList
-        style={Styles.textTitle}
+        style={Styles.sectionList}
         sections={getSecctions()}
         keyExtractor={(item) => item}
         renderItem={({ item }) =>
@@ -61,6 +67,12 @@ const CoinDetailScreen = ({ route, navigation }) => {
           </View >
         }
       />
+      <Text style={Styles.MarketTitle}> Markets</Text>
+      <FlatList
+        style={Styles.list}
+        horizontal={true}
+        data={markets}
+        renderItem={({ item }) => <CoinMarketItem item={item} />} />
     </View >
   )
 }
@@ -70,16 +82,30 @@ const Styles = StyleSheet.create({
     backgroundColor: Colors.charade,
     flex: 1
   },
+  list: {
+    maxHeight: 100,
+    padding: 5
+  },
   subHeader: {
     backgroundColor: "rgba(0,0,0,0.1)",
     padding: 16,
     flexDirection: "row"
+  },
+  sectionList: {
+    maxHeight: 200
   },
   textTitle: {
     fontSize: 16,
     fontWeight: "bold",
     color: "white",
     marginLeft: 8
+  },
+  MarketTitle: {
+    fontSize: 16,
+    color: "white",
+    marginTop: 16,
+    marginLeft: 8,
+    fontWeight: 'bold'
   },
   iconImage: {
     width: 25,

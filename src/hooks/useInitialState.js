@@ -2,7 +2,8 @@ import { useState } from 'react'
 
 const useInitialState = () => {
   const initialState = {
-    coins: []
+    coins: [],
+    markets: []
   }
   const [state, setState] = useState(initialState)
 
@@ -12,8 +13,15 @@ const useInitialState = () => {
       coins: payload
     })
   }
+  const listMarkets = payload => {
+    setState({
+      ...state,
+      markets: payload
+    })
+  }
   return {
     listcoins,
+    listMarkets,
     state
   }
 }
