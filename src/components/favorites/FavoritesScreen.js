@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { View, Text, FlatList, StyleSheet } from 'react-native'
 import colors from '../../res/Colors'
+import AppContext from '../../context/AppContext'
 import FavoritesEmptyState from './FavoritesEmptyState'
 import { getAllKeys, getAll } from '../../libs/storage'
 import CoinsItem from '../coins/CoinsItem'

@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { View, Text, Image, StyleSheet, FlatList, SectionList, Pressable, Alert } from 'react-native'
+import React, { useEffect, useState, useContext, useCallback } from 'react'
+import { View, Text, Image, StyleSheet, FlatList, SectionList, Pressable, Alert, ActivityIndicator } from 'react-native'
 import Colors from '../../res/Colors'
 import AppContext from '../../context/AppContext'
 import { get } from '../../libs/Http'
@@ -7,23 +7,26 @@ import CoinMarketItem from './CoinMarketItem'
 import { getStorage, postStore, removeStorage } from '../../libs/storage'
 
 const CoinDetailScreen = ({ route, navigation }) => {
-
   const { coinDetail } = route.params
-
-  const [coin, setCoin] = useState(coinDetail)
+  const [loading, setLoading] = useState(true)
   const [isFavorite, setIsFavorite] = useState(false)
   const { state, listMarkets } = useContext(AppContext)
   const { markets } = state
+  const [coin, setCoin] = useState(coinDetail)
+
 
   useEffect(() => {
+    setLoading(true)
     navigation.setOptions({ title: coin.name })
+    setCoin(coinDetail)
     async function getMarkets() {
       const markets = await get(`coin/markets/?id=${coin.id}`)
       listMarkets(markets)
+      setLoading(false)
     }
     getMarkets()
     getFavorites()
-  }, [])
+  }, [coinDetail])
 
   async function getFavorites() {
     try {
@@ -34,7 +37,6 @@ const CoinDetailScreen = ({ route, navigation }) => {
       console.log('getFavorites', error);
     }
   }
-
 
   getSymbolIcon = (nameString) => {
     if (nameString) {
@@ -62,11 +64,11 @@ const CoinDetailScreen = ({ route, navigation }) => {
   }
 
   toggleFavorite = async () => {
-    const currentCoint = JSON.stringify(coin)
+    const coinDetail = JSON.stringify(coin)
     const key = `favorite=${coin.id}`
     let stored;
     if (!isFavorite) {
-      stored = await postStore(key, currentCoint)
+      stored = await postStore(key, coinDetail)
       if (stored) {
         setIsFavorite(!isFavorite)
       }
@@ -75,9 +77,6 @@ const CoinDetailScreen = ({ route, navigation }) => {
     }
   }
 
-  addFavorite = () => {
-
-  }
   removeFavorite = async (key) => {
     Alert.alert("Remove Favorite", "Are you sure?", [
       {
@@ -130,11 +129,20 @@ const CoinDetailScreen = ({ route, navigation }) => {
         }
       />
       <Text style={Styles.MarketTitle}> Markets</Text>
-      <FlatList
-        style={Styles.list}
-        horizontal={true}
-        data={markets}
-        renderItem={({ item }) => <CoinMarketItem item={item} />} />
+      {
+        loading
+          ? <ActivityIndicator
+            style={Styles.loader}
+            color="#fff"
+            size="large" />
+          : <FlatList
+            style={Styles.list}
+            horizontal={true}
+            data={markets}
+            renderItem={({ item }) => <CoinMarketItem item={item} />} />
+
+      }
+
     </View >
   )
 }
@@ -143,6 +151,9 @@ const Styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.charade,
     flex: 1
+  },
+  loader: {
+    marginTop: 60
   },
   row: {
     flexDirection: "row"
