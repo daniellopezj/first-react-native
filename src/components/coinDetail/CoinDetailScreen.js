@@ -14,7 +14,6 @@ const CoinDetailScreen = ({ route, navigation }) => {
   const { markets } = state
   const [coin, setCoin] = useState(coinDetail)
 
-
   useEffect(() => {
     setLoading(true)
     navigation.setOptions({ title: coin.name })
@@ -139,7 +138,9 @@ const CoinDetailScreen = ({ route, navigation }) => {
             style={Styles.list}
             horizontal={true}
             data={markets}
-            renderItem={({ item }) => <CoinMarketItem item={item} />} />
+            renderItem={({ item }) => <CoinMarketItem item={item} />}
+            keyExtractor={(item, index) => index.toString()}
+          />
 
       }
 

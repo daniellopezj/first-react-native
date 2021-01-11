@@ -42,9 +42,12 @@ const CoinsScreen = (props) => {
             style={styles.loader}
             color="#fff"
             size="large" />
-          : <FlatList
+
+          :
+
+          <FlatList
             data={coinsSearch}
-            renderItem={({ item }) => (<CoinsItem item={item} onPress={() => handlePress(item)} />)} >
+            renderItem={({ item }) => (<CoinsItem key={item.id} item={item} onPress={() => handlePress(item)} />)} >
           </FlatList>
       }
 
