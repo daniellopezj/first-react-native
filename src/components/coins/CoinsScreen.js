@@ -5,17 +5,18 @@ import AppContext from '../../context/AppContext'
 import { get } from '../../libs/Http'
 import CoinsItem from './CoinsItem'
 import Colors from '../../res/Colors'
+import CoinsSearch from './CoinsSearch'
 
 const CoinsScreen = (props) => {
   const [loading, setLoading] = useState(true)
-
-  const { state, listcoins } = useContext(AppContext)
-  const { coins } = state
+  const { state, listAllCoins, listcoinsSearch } = useContext(AppContext)
+  const { allCoins, coinsSearch } = state
 
   useEffect(() => {
     async function getDataFetch() {
       const dataFetch = await get('tickers')
-      listcoins(dataFetch.data)
+      listAllCoins(dataFetch.data)
+      listcoinsSearch(dataFetch.data)
       setLoading(false)
     }
 
@@ -26,9 +27,18 @@ const CoinsScreen = (props) => {
     props.navigation.navigate('CoinDetail', { coinDetail })
   }
 
+  const handleSearch = (query) => {
+    const coinsFilter = allCoins.filter(
+      (coin) =>
+        coin.name.toLowerCase().includes(query.toLowerCase()) ||
+        coin.symbol.toLowerCase().includes(query.toLowerCase()))
+    console.log(coinsFilter)
+    listcoinsSearch(coinsFilter)
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText}>Coins Screennnn</Text>
+      <CoinsSearch onchange={handleSearch} />
       {
         loading
           ? <ActivityIndicator
@@ -36,15 +46,15 @@ const CoinsScreen = (props) => {
             color="#fff"
             size="large" />
           : <FlatList
-            data={coins}
+            data={coinsSearch}
             renderItem={({ item }) => (<CoinsItem item={item} onPress={() => handlePress(item)} />)} >
           </FlatList>
       }
 
-      <Pressable style={styles.btn} onPress={handlePress}>
+      {/* <Pressable style={styles.btn} onPress={handlePress}>
         <Text style={styles.btnText}>go to details
         </Text>
-      </Pressable>
+      </Pressable> */}
     </View>
   );
 };
