@@ -14,7 +14,6 @@ const CoinDetailScreen = ({ route, navigation }) => {
   const { markets } = state
   const [coin, setCoin] = useState(coinDetail)
 
-
   useEffect(() => {
     setLoading(true)
     navigation.setOptions({ title: coin.name })

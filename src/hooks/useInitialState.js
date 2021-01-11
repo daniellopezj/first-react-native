@@ -5,7 +5,8 @@ const useInitialState = () => {
     coinsSearch: [],
     allCoins: [],
     markets: [],
-    currentCoint: {}
+    currentCoint: {},
+    token: ''
   }
   const [state, setState] = useState(initialState)
 
@@ -23,12 +24,6 @@ const useInitialState = () => {
       coinsSearch: payload,
     })
   }
-  // const setCurrentCoint = payload => {
-  //   setState({
-  //     ...state,
-  //     currentCoint: payload,
-  //   })
-  // }
   const listMarkets = payload => {
     setState({
       ...state,
