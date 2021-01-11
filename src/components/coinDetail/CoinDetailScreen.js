@@ -138,7 +138,9 @@ const CoinDetailScreen = ({ route, navigation }) => {
             style={Styles.list}
             horizontal={true}
             data={markets}
-            renderItem={({ item }) => <CoinMarketItem item={item} />} />
+            renderItem={({ item }) => <CoinMarketItem item={item} />}
+            keyExtractor={(item, index) => index.toString()}
+          />
 
       }
 

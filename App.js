@@ -16,7 +16,6 @@ const App = () => {
   const initialState = useInitialState()
   const useAuth = useAuthState()
   const { isLogin } = useAuth.state
-  console.log(isLogin)
   return (
 
     <AppContext.Provider value={initialState}>
