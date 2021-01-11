@@ -9,17 +9,15 @@ import CoinsSearch from './CoinsSearch'
 
 const CoinsScreen = (props) => {
   const [loading, setLoading] = useState(true)
-  const { state, listAllCoins, listcoinsSearch } = useContext(AppContext)
+  const { state, setList, listCoinsSearch } = useContext(AppContext)
   const { allCoins, coinsSearch } = state
 
   useEffect(() => {
     async function getDataFetch() {
       const dataFetch = await get('tickers')
-      listAllCoins(dataFetch.data)
-      listcoinsSearch(dataFetch.data)
+      setList(dataFetch.data)
       setLoading(false)
     }
-
     getDataFetch()
   }, [])
 
@@ -32,8 +30,7 @@ const CoinsScreen = (props) => {
       (coin) =>
         coin.name.toLowerCase().includes(query.toLowerCase()) ||
         coin.symbol.toLowerCase().includes(query.toLowerCase()))
-    console.log(coinsFilter)
-    listcoinsSearch(coinsFilter)
+    listCoinsSearch(coinsFilter)
   }
 
   return (

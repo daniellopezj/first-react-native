@@ -5,21 +5,30 @@ const useInitialState = () => {
     coinsSearch: [],
     allCoins: [],
     markets: [],
+    currentCoint: {}
   }
   const [state, setState] = useState(initialState)
 
-  const listcoinsSearch = payload => {
+  const setList = payload => {
     setState({
       ...state,
-      coinsSearch: payload
-    })
-  }
-  const listAllCoins = payload => {
-    setState({
-      ...state,
+      coinsSearch: payload,
       allCoins: payload
     })
   }
+
+  const listCoinsSearch = payload => {
+    setState({
+      ...state,
+      coinsSearch: payload,
+    })
+  }
+  // const setCurrentCoint = payload => {
+  //   setState({
+  //     ...state,
+  //     currentCoint: payload,
+  //   })
+  // }
   const listMarkets = payload => {
     setState({
       ...state,
@@ -27,9 +36,10 @@ const useInitialState = () => {
     })
   }
   return {
-    listcoinsSearch,
+    setList,
+    listCoinsSearch,
     listMarkets,
-    listAllCoins,
+    // setCurrentCoint,
     state
   }
 }
