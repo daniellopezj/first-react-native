@@ -1,12 +1,12 @@
 
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import CoinDetailScreen from "../coinDetail/CoinDetailScreen";
+import AuthLogin from "./AuthLogin";
 import Colors from '../../res/Colors'
 
 const Stack = createStackNavigator();
 
-const CoinsStack = () => {
+const AuthStack = () => {
   return (
     <Stack.Navigator screenOptions={{
       headerStyle: {
@@ -17,9 +17,9 @@ const CoinsStack = () => {
       headerTintColor: Colors.white,
 
     }}>
-      <Stack.Screen name="Coins" component={CoinsScreen} />
-      <Stack.Screen name="CoinDetail" component={CoinDetailScreen} />
+      <Stack.Screen name="Login" component={AuthLogin} />
     </Stack.Navigator>
   );
-};
-export default CoinsStack;
+}
+
+export default AuthStack

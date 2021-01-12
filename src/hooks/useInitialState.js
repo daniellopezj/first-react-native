@@ -8,6 +8,7 @@ const useInitialState = () => {
     currentCoint: {},
     token: ''
   }
+
   const [state, setState] = useState(initialState)
 
   const setList = payload => {

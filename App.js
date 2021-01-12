@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from "@react-navigation/stack";
 import CoinsStack from './src/components/coins/CoinsStack'
 import AppContext from './src/context/AppContext';
 import useInitialState from './src/hooks/useInitialState';
@@ -8,6 +9,7 @@ import { Image, Text } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import colors from './src/res/Colors';
 import FavoritesStack from './src/components/favorites/FavoritesStack'
+import AuthStack from './src/components/auth/AuthStack'
 
 const Tabs = createBottomTabNavigator()
 
@@ -16,10 +18,10 @@ const App = () => {
   const initialState = useInitialState()
   const useAuth = useAuthState()
   const { isLogin } = useAuth.state
-  return (
 
+  return (
     <AppContext.Provider value={initialState}>
-      {  !isLogin
+      {  isLogin
         ? <NavigationContainer>
           <Tabs.Navigator
             tabBarOptions={{
@@ -49,9 +51,10 @@ const App = () => {
             </Tabs.Screen>
           </Tabs.Navigator>
         </NavigationContainer>
-        : <Text>
-          no esta logeado
-      </Text>
+        : <NavigationContainer>
+          <AuthStack />
+        </NavigationContainer>
+
       }
     </AppContext.Provider>
   );
