@@ -1,27 +1,26 @@
-import React, { useContext } from 'react'
+import React, { useReducer } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from "@react-navigation/stack";
 import CoinsStack from './src/components/coins/CoinsStack'
-import AppContext from './src/context/AppContext';
-import useInitialState from './src/hooks/useInitialState';
-import useAuthState from './src/hooks/useAuthState';
+// import AppContext from './src/context/AppContext';
+// import useInitialState from './src/hooks/useInitialState';
+// import useAuthState from './src/hooks/useAuthState';
 import { Image, Text } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import colors from './src/res/Colors';
 import FavoritesStack from './src/components/favorites/FavoritesStack'
 import AuthStack from './src/components/auth/AuthStack'
 
+import mainStore from "./src/store/index";
+import { Provider } from 'react-redux';
+
 const Tabs = createBottomTabNavigator()
 
 const App = () => {
 
-  const initialState = useInitialState()
-  const useAuth = useAuthState()
-  const { isLogin } = useAuth.state
-
   return (
-    <AppContext.Provider value={initialState}>
-      {  isLogin
+    <Provider store={mainStore}>
+      {/* <AppContext.Provider value={{ globalState, dispatch }}> */}
+      {  true
         ? <NavigationContainer>
           <Tabs.Navigator
             tabBarOptions={{
@@ -56,7 +55,8 @@ const App = () => {
         </NavigationContainer>
 
       }
-    </AppContext.Provider>
+      {/* </AppContext.Provider> */}
+    </Provider>
   );
 };
 

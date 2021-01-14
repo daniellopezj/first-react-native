@@ -1,14 +1,14 @@
 import React, { useEffect, useContext, useState } from 'react'
 import { View, Text, FlatList, StyleSheet } from 'react-native'
 import colors from '../../res/Colors'
-import AppContext from '../../context/AppContext'
 import FavoritesEmptyState from './FavoritesEmptyState'
 import { getAllKeys, getAll } from '../../libs/storage'
 import CoinsItem from '../coins/CoinsItem'
-
+import AppContext from '../../context/AppContext'
 const FavoritesScreen = ({ navigation }) => {
 
   const [favorites, setFavorites] = useState([])
+  const { globalState, dispatch } = useContext(AppContext);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -25,7 +25,7 @@ const FavoritesScreen = ({ navigation }) => {
     setFavorites(allFavorites)
   }
 
-  handlePress = (coinDetail) => {
+  const handlePress = (coinDetail) => {
     navigation.navigate('CoinDetail', { coinDetail })
   }
 
