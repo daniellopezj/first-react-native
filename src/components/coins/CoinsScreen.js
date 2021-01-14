@@ -1,28 +1,42 @@
 
-import React, { useEffect, useContext, useState } from 'react';
+import { connect } from 'react-redux';
+import React, { useEffect, useContext, useState, useReducer } from 'react';
 import { View, FlatList, Text, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
-import AppContext from '../../context/AppContext'
 import { get } from '../../libs/Http'
 import CoinsItem from './CoinsItem'
 import Colors from '../../res/Colors'
 import CoinsSearch from './CoinsSearch'
+import { setList, setListSearch } from '../../actions/coinsActions'
 
 const CoinsScreen = (props) => {
   const [loading, setLoading] = useState(true)
-  const { state, setList, listCoinsSearch } = useContext(AppContext)
-  const { allCoins, coinsSearch } = state
+  console.log(props)
+  const { coinsSearch } = props.coins
+  // const { initialState } = useContext(AppContext)
+  // const [listData, dispatch] = useReducer(coinsReducer, initialState);
+  // console.log(listData)
+  // del context destructuro los archivos donde van a
+  // ir los eventos que van a cambiar el store de la aplicacion 
+  // const { allCoins, coinsSearch } = initialState
 
+  // const { globalState, dispatch } = useContext(AppContext);
+  // const { coinsSearch } = globalState
   useEffect(() => {
     async function getDataFetch() {
       const dataFetch = await get('tickers')
-      setList(dataFetch.data)
+      const { data } = dataFetch
+      props.setList(data)
+      props.setListSearch(data)
+      // actionCoins.setListSearch(data)
+      // dispatch({ type: ActionTypes.SET_LIST, payload: dataFetch.data })
+      // dispatch({ type: ActionTypes.SET_SEARCH_LIST, payload: dataFetch.data })
       setLoading(false)
     }
     getDataFetch()
   }, [])
 
   const handlePress = (coinDetail) => {
-    props.navigation.navigate('CoinDetail', { coinDetail })
+    // props.navigation.navigate('CoinDetail', { coinDetail })
   }
 
   const handleSearch = (query) => {
@@ -51,10 +65,10 @@ const CoinsScreen = (props) => {
           </FlatList>
       }
 
-      {/* <Pressable style={styles.btn} onPress={handlePress}>
+      <Pressable style={styles.btn} onPress={handlePress}>
         <Text style={styles.btnText}>go to details
         </Text>
-      </Pressable> */}
+      </Pressable>
     </View>
   );
 };
@@ -80,4 +94,17 @@ const styles = StyleSheet.create(
     }
   }
 )
-export default CoinsScreen;
+
+
+const mapStateToProps = ({ coins }) => {
+  return { coins };
+};
+
+const mapDispatchToProps = {
+  setList,
+  setListSearch,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoinsScreen);
+
+// export default CoinsScreen;

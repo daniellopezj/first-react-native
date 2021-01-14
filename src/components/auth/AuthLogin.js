@@ -8,8 +8,8 @@ const AuthLogin = () => {
   // const { state, Login } = useContext(useAuthState)
 
   const handleLogin = () => {
-    Login('prueba')
-    console.log(state)
+    // Login('prueba')
+    console.log('prueba')
   }
 
   return (
